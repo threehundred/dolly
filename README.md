@@ -1,4 +1,4 @@
 dolly
 =====
 
-Image similarity search built on top of LIre
+Image similarity search built on top of Lire
