@@ -25,27 +25,32 @@ public class LireSearcher {
 
     public LireSearcher() {}
 
-    public ImageList search(String imagePath, String[] imageComparisonList, int limit) throws IOException {
+    public ImageList search(String imagePath, String[] imageComparisonList, int limit, double similarityGreater, String featureType) throws IOException {
         List<String> comparisonListAsList = Arrays.asList(imageComparisonList);
-        System.out.println(comparisonListAsList);
 
         //intialise some things
         String indexPath = "lire-index";
         IndexReader ir = DirectoryReader.open(FSDirectory.open(new File(indexPath)));
-        //ImageSearcher searcher = ImageSearcherFactory.createCEDDImageSearcher(1000);
-        ImageSearcher searcher = ImageSearcherFactory.createGaborImageSearcher(1000);
+        ImageSearcher searcher;
+
+        if(featureType.equals("gabor")) {
+            searcher = ImageSearcherFactory.createGaborImageSearcher(100000);
+        } else { //default to CEDD
+            searcher = ImageSearcherFactory.createCEDDImageSearcher(100000);
+        }
 
         //do the search
         ImageSearchHits hits = searcher.search(ImageIO.read(new File(imagePath)), ir);
         ImageList imageList = new ImageList();
 
-        //pack the image list
+        //pack the image list - go in reverse order, as the highest weighted images are at the top
         for (int j = 0; j < hits.length(); j++) {
 
-            //pull out weightings greater than 80
-            if(hits.score(j) > 80) {
+            //pull out images with closeness score above the given
+            if(hits.score(j) > similarityGreater) {
                 String fileName = hits.doc(j).getValues(DocumentBuilder.FIELD_NAME_IDENTIFIER)[0];
 
+                //only take the image from the subset we are interested in
                 if(comparisonListAsList.contains(fileName)) {
                     imageList.add(new Image(fileName, hits.score(j)));
                 }

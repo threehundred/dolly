@@ -3,7 +3,6 @@ package org.catami.dolly;
 import net.semanticmetadata.lire.DocumentBuilder;
 import net.semanticmetadata.lire.DocumentBuilderFactory;
 import net.semanticmetadata.lire.impl.ChainedDocumentBuilder;
-import net.semanticmetadata.lire.indexing.parallel.ParallelIndexer;
 import net.semanticmetadata.lire.utils.FileUtils;
 import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
 import org.apache.lucene.document.Document;
@@ -55,6 +54,7 @@ public class LireIndexer {
         // Use multiple DocumentBuilder instances:
         ChainedDocumentBuilder builder = new ChainedDocumentBuilder();
         builder.addBuilder(DocumentBuilderFactory.getGaborDocumentBuilder());
+        builder.addBuilder(DocumentBuilderFactory.getCEDDDocumentBuilder());
 
         // Creating an Lucene IndexWriter
         IndexWriterConfig conf = new IndexWriterConfig(Version.LUCENE_40, new WhitespaceAnalyzer(Version.LUCENE_40));
