@@ -20,7 +20,7 @@ public class SearchController {
     @Autowired
     private LireSearcher lireSearcher;
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.POST)
     public @ResponseBody ImageList search(@RequestParam("imagePath") String imagePath,
                                           @RequestParam("imageComparisonList") String[] imageComparisonList,
                                           @RequestParam("limit") int limit,

@@ -46,8 +46,8 @@ public class LireSearcher {
         //pack the image list - go in reverse order, as the highest weighted images are at the top
         for (int j = 0; j < hits.length(); j++) {
 
-            //pull out images with closeness score above the given
-            if(hits.score(j) > similarityGreater) {
+            //pull out images with closeness score above the given, and don't send back duplicates
+            if(hits.score(j) > similarityGreater && hits.score(j) != 1.0) {
                 String fileName = hits.doc(j).getValues(DocumentBuilder.FIELD_NAME_IDENTIFIER)[0];
 
                 //only take the image from the subset we are interested in
